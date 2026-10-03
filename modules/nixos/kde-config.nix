@@ -12,6 +12,34 @@
 
         krunner.shortcuts.launch = "Alt+Space";
 
+        window-rules = [
+            {
+                description = "Firefox PiP - Always on Top";
+                match = {
+                    window-class = {
+                        value = "firefox";
+                        type = "exact";
+                        match-whole = false;
+                    };
+                    title = {
+                        value = "Picture-in-Picture";
+                        type = "exact";
+                    };
+                    window-types = [ "normal" ];
+                };
+                apply = {
+                    above = {
+                        value = true;
+                        apply = "force";
+                    };
+                    layer = {
+                        value = "popup";
+                        apply = "force";
+                    };
+                };
+            }
+        ];
+
         configFile = {
             # Global settings
             "kdeglobals"."General"."ColorScheme" = "BreezeDark";
