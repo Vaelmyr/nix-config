@@ -113,11 +113,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1791054125,
-        "narHash": "sha256-G33dFGtSC+g2TzCP+vYaI/hrWZx8RHmPuxkX4fBmqsA=",
+        "lastModified": 1791069132,
+        "narHash": "sha256-iRf+NdkxuuaS3vmehH/olatfYTF2CLw5U7kUguedV9c=",
         "ref": "main",
-        "rev": "9db615dd1ac285b4cdd70b705de625f8850c3cee",
-        "revCount": 2,
+        "rev": "75bd6c2a58f69dbfd8d927a6728f65384d9a9b75",
+        "revCount": 3,
         "type": "git",
         "url": "ssh://git@github.com/Vaelmyr/nix-secrets.git"
       },

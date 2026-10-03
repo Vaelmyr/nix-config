@@ -7,6 +7,13 @@
         ];
 
         secrets = {
+            openpgp-private-key = {
+                file = "${secrets}/openpgp-private-key.age";
+                owner = user;
+                group = "users";
+                mode = "0400";
+            };
+
             github-personal = {
                 file = "${secrets}/id_ed25519_github_personal.age";
                 path = "${config.users.users.${user}.home}/.ssh/id_ed25519_github_personal";

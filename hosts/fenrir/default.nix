@@ -5,6 +5,7 @@
         ./hardware-configuration.nix
         ./disko.nix
         ../../modules/nixos/secrets.nix
+        ../../modules/nixos/gnupg.nix
     ];
 
     # Hardware configuration, merged from `hardware-configuration.nix`
