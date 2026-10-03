@@ -1,93 +1,101 @@
-# Installation guide
+# NixOS installation guide
 
 ## 1. Boot the installer
 
-Boot a NixOS installer in UEFI mode through netboot.xyz. On its local console,
-open a root shell, set a temporary root password, and start SSH:
+Boot the NixOS installer and, from its local console, open a root shell and set
+a temporary root password:
 
 ```bash
 sudo -i
 passwd root
+```
+
+Start the SSH server and prepare a temporary directory for the bootstrap files:
+
+```bash
 systemctl start sshd
 install -d -m 0700 /run/bootstrap
+```
+
+Find the installer's IP address:
+
+```bash
 ip -br -4 address
-ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
 ```
 
-From another PC, replace the example IP and local paths below. Copy the repository
-and the existing agenix identity, then connect to the installer:
+From another computer, copy the existing agenix identity to the installer and
+connect over SSH. Replace `nixos` with the IP address found above:
 
 ```bash
-installer_ip=192.168.1.123
-scp -r /path/to/nix-config "root@${installer_ip}:/root/nix-config"
-scp /path/to/id_ed25519_agenix "root@${installer_ip}:/run/bootstrap/id_ed25519_agenix"
-ssh "root@${installer_ip}"
+scp /path/to/id_ed25519_agenix root@nixos:/run/bootstrap/id_ed25519_agenix
+ssh root@nixos
 ```
 
-On the first connection, match the SSH host fingerprint with the one displayed
-on the installer console. Use the temporary root password when prompted. This
-password applies only to the live installer.
-
-In the remote root shell:
+Start a temporary shell containing Git and OpenSSH:
 
 ```bash
+nix --extra-experimental-features 'nix-command flakes' \
+  shell nixpkgs#git nixpkgs#openssh
+```
+
+Clone this repository and enter its directory:
+
+```bash
+git clone git@github.com:Vaelmyr/nix-config.git /root/nix-config
 cd /root/nix-config
 ```
 
-Ensure the installer has internet access. The transferred agenix identity must
-decrypt the existing secrets; do not generate a replacement key.
-
-Its public key is registered as a deploy key for `nix-secrets`. Load the private
-key into the installer's SSH agent before running any flake command:
+Set the correct permissions on the agenix identity, start a new SSH agent, and
+load the key:
 
 ```bash
 chown root:root /run/bootstrap/id_ed25519_agenix
 chmod 0600 /run/bootstrap/id_ed25519_agenix
-eval "$(ssh-agent -s)"
+
+eval "$(ssh-agent -a /run/bootstrap/ssh-agent.sock -s)"
 ssh-add /run/bootstrap/id_ed25519_agenix
+```
+
+Verify that the same identity can access the private `nix-secrets` repository:
+
+```bash
 git ls-remote ssh://git@github.com/Vaelmyr/nix-secrets.git HEAD
 ```
 
-If prompted on the first connection, verify GitHub's
-[SSH host fingerprint](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
-Continue in this root shell so Nix can use the agent. The same key will be copied
-into the installed system for agenix; no second key is needed to fetch
-`nix-secrets` during installation.
-
-Ensure the pinned `nix-secrets` revision contains `smb-home-server.age`. If it was
-added after the last lock update, run `nix flake update secrets` before installing.
+Keep this shell open for the installation so Nix can continue to use the SSH
+agent.
 
 ## 2. Install with disko-install
 
-Check the configured OS disk:
+> [!WARNING]
+> The following command formats the selected disk. Verify the device and make
+> sure a current backup exists before continuing.
+
+Run the installation from the repository directory:
 
 ```bash
-lsblk -o NAME,PATH,MODEL,SIZE,FSTYPE,MOUNTPOINTS
-readlink -f /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221223NV01kG05593
+nix \
+  --extra-experimental-features 'nix-command flakes' \
+  run --inputs-from . disko#disko-install -- \
+    --flake .#fenrir \
+    --disk main /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221223NV01kG05593 \
+    --write-efi-boot-entries \
+    --extra-files /run/bootstrap/id_ed25519_agenix /var/lib/agenix/id_ed25519_agenix
 ```
 
-**The next command erases the selected OS disk. Confirm the target first.**
-Run it from the repository directory and set a LUKS passphrase when prompted:
+When prompted, choose a LUKS encryption passphrase:
 
-```bash
-nix run --inputs-from . disko#disko-install -- \
-  --flake .#fenrir \
-  --disk main /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221223NV01kG05593 \
-  --write-efi-boot-entries \
-  --extra-files /run/bootstrap/id_ed25519_agenix /var/lib/agenix/id_ed25519_agenix
+```text
+Enter password for /dev/disk/by-partlabel/disk-main-root:
 ```
 
-This uses the disko input pinned in `flake.lock`, partitions and mounts the disk,
-copies the bootstrap files with their ownership and permissions, and installs
-NixOS and its UEFI boot entry. Do not run `nixos-install` separately.
-
-When installation succeeds, run `reboot`. Keep the LUKS passphrase as a recovery
-method and enter it on first boot.
+Keep this passphrase as a recovery method. After the installation completes,
+reboot into the installed system.
 
 ## 3. Enroll TPM2 on the installed system
 
-Finalize any intended Secure Boot configuration before enrollment. Check the
-TPM and the configured LUKS2 device:
+Finalize the intended Secure Boot configuration before enrolling the TPM.
+Then check the available TPM and inspect the configured LUKS2 device:
 
 ```bash
 luks_device=/dev/disk/by-partlabel/disk-main-root
@@ -95,17 +103,25 @@ sudo systemd-cryptenroll --tpm2-device=list
 sudo cryptsetup luksDump "$luks_device"
 ```
 
-If there is no existing TPM2 enrollment, add one using the LUKS passphrase:
+If the device does not already have a TPM2 enrollment, add one using the LUKS
+passphrase:
 
 ```bash
 sudo systemd-cryptenroll \
   --tpm2-device=auto \
   --tpm2-pcrs=7 \
   "$luks_device"
-sudo reboot
 ```
 
-PCR 7 binds unlocking to the Secure Boot policy; this configuration does not
-set up Secure Boot or signed kernel images. Keep the passphrase slot: changes
-to that policy can require recovery and re-enrollment. No rebuild is needed
-solely for enrollment.
+PCR 7 binds automatic unlocking to the Secure Boot policy. This enrollment does
+not configure Secure Boot or sign kernel images. Keep the passphrase slot:
+changes to the Secure Boot policy may require recovery with the passphrase and
+TPM re-enrollment. No NixOS rebuild is required solely for TPM enrollment.
+
+## 4. Enjoy your system
+
+Now you can restart into your freshly installed NixOS:
+
+```bash
+sudo reboot
+```
