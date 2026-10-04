@@ -7,6 +7,13 @@
         ];
 
         secrets = {
+            openpgp-passphrase = {
+                file = "${secrets}/openpgp-passphrase.age";
+                owner = user;
+                group = "users";
+                mode = "0400";
+            };
+
             openpgp-private-key = {
                 file = "${secrets}/openpgp-private-key.age";
                 owner = user;
