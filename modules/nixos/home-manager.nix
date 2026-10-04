@@ -16,4 +16,7 @@ in
     };
 
     programs = shared-programs;
+
+    # Fonts are installed system-wide; let Plasma manage user font rendering settings.
+    fonts.fontconfig.enable = false;
 }

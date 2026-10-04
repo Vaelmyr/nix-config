@@ -1,6 +1,10 @@
+{ osConfig, ... }:
+
 {
     programs.plasma = {
         enable = true;
+
+        session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
         shortcuts = {
             "kmix"."mic_mute" = [
@@ -51,8 +55,10 @@
             "kdeglobals"."KFileDialog Settings"."Sort directories first" = true;
             "kdeglobals"."KFileDialog Settings"."View Style" = "DetailTree";
 
-            # Locale settings
-            "plasma-localerc"."Formats"."LANG" = "en_US.UTF-8";
+            # Keep KDE regional formats in sync with the NixOS locale settings.
+            "plasma-localerc"."Formats" = {
+                LANG = osConfig.i18n.defaultLocale;
+            } // osConfig.i18n.extraLocaleSettings;
         };
     };
 }
