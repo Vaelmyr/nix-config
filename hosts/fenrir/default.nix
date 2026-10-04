@@ -139,6 +139,9 @@
         };
     };
 
+    # Let SDL use xpadneo mappings so Steam can configure the Elite Series 2 paddles.
+    environment.sessionVariables.SDL_JOYSTICK_HIDAPI = "0";
+
     # Console configuration for virtual terminals
     console.useXkbConfig = true;
 
