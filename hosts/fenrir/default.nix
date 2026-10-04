@@ -225,6 +225,9 @@
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
+    # Overlays for custom package definitions
+    nixpkgs.overlays = import ./overlays.nix;
+
     # List packages installed in system profile. To search, run:
     #   $ nix search <pkg>
     environment.systemPackages = with pkgs; [
