@@ -31,6 +31,8 @@ with pkgs; [
     # S
     # T
     # U
+    umu-launcher
+
     # V
     # W
     wine
