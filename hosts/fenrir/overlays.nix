@@ -1,5 +1,10 @@
 [
     (final: prev: {
+        # TablePlus needs GIO's TLS backend for HTTPS license activation.
+        tableplus = prev.tableplus.overrideAttrs (old: {
+            buildInputs = (old.buildInputs or []) ++ [ final.glib-networking ];
+        });
+
         # ROCm SMI's default pci.ids paths are unavailable on NixOS.
         rocmPackages = prev.rocmPackages.overrideScope (rocmFinal: rocmPrev: {
             rocm-smi = rocmPrev.rocm-smi.overrideAttrs (old: {
