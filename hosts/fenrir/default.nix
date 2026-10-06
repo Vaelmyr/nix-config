@@ -168,7 +168,17 @@
         desktopManager.plasma6.enable = true;
 
         # Enable CUPS to print documents
-        printing.enable = true;
+        printing = {
+            enable = true;
+            drivers = [ pkgs.hplip ];
+        };
+
+        avahi = {
+            enable = true;
+            nssmdns4 = true;
+            nssmdns6 = true;
+            openFirewall = true;
+        };
 
         # Disable PulseAudio in favor of PipeWire for audio management
         pulseaudio.enable = false;
