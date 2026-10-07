@@ -17,7 +17,7 @@ with pkgs; [
 
     # E
     # F
-    firefox
+    firefox-bin
 
     # G
     gh
