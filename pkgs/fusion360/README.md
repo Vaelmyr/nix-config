@@ -22,6 +22,10 @@ Launch with:
 fusion360
 ```
 
+Your Linux home is available as drive `H:` in Fusion's file dialogs, including
+Documents, Downloads and Projects. The Windows profile and application data stay
+inside the Wine prefix. Existing custom `H:` mappings are preserved.
+
 The upstream installer creates application entries and the Autodesk browser login
 handler. Both enter the same FHS environment. An Autodesk account and the applicable
 Fusion license are still required.

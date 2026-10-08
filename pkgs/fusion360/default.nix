@@ -51,6 +51,17 @@ let
     };
 
     dispatch = writeShellScript "fusion360-dispatch" ''
+        # Upstream's winetricks sandbox removes the default home mappings.
+        autodesk_root="$HOME/.local/share/Autodesk-Unofficial"
+        if [ -s "$autodesk_root/logs/active_fusion.log" ]; then
+            active=$(cat "$autodesk_root/logs/active_fusion.log")
+            prefix=$(sed -n '2p' "$autodesk_root/logs/$active/prefix.config")
+            if [ -d "$prefix/dosdevices" ] &&
+               [ ! -e "$prefix/dosdevices/h:" ] && [ ! -L "$prefix/dosdevices/h:" ]; then
+                ln -s -- "$HOME" "$prefix/dosdevices/h:"
+            fi
+        fi
+
         case "''${1:-}" in
             --help|-h)
                 echo "Usage: fusion360 [--installer [INSTALLER_ARGS...] | --exec COMMAND...]"
