@@ -90,6 +90,9 @@
             extraInputRules = ''
                 # SSH from trusted LANs/VPN
                 ip saddr 192.168.1.0/24 tcp dport 22 accept
+
+                # Bambu Lab printer discovery announcements from the LAN.
+                ip saddr 192.168.1.0/24 udp dport { 1990, 2021 } accept
             '';
         };
 

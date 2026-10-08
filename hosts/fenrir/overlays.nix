@@ -1,5 +1,8 @@
 [
     (final: prev: {
+        # Use upstream's binary build for compatibility with the Bambu network plugin.
+        orca-slicer = final.callPackage ../../pkgs/orca-slicer { };
+
         fusion360 = final.callPackage ../../pkgs/fusion360 { };
 
         # Pin official previews independently of nixpkgs' stable Godot.
