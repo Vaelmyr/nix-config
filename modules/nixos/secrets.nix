@@ -35,6 +35,13 @@
                 group = "users";
             };
 
+            gitea-personal = {
+                file = "${secrets}/id_ed25519_gitea_personal.age";
+                path = "${config.users.users.${user}.home}/.ssh/id_ed25519_gitea_personal";
+                owner = user;
+                group = "users";
+            };
+
             user-password = {
                 file = "${secrets}/user-password.age";
             };

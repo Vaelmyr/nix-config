@@ -11,6 +11,12 @@ let
         email = "s.distefano@davinci.care";
         signingKey = "${config.home.homeDirectory}/.ssh/id_ed25519_github_davinci";
     };
+
+    personalGiteaIdentity = {
+        name = "Vaelmyr";
+        email = "sdistefano.dev@gmail.com";
+        signingKey = "${config.home.homeDirectory}/.ssh/id_ed25519_gitea_personal";
+    };
 in
 {
     direnv = {
@@ -126,6 +132,20 @@ in
                 condition = "hasconfig:remote.*.url:ssh://git@github.com/DavinciSalute/**";
                 contents.user = davinciGitIdentity;
             }
+
+            # Personal Gitea
+            {
+                condition = "hasconfig:remote.*.url:git@gitea.vaelmyr.dev:*/**";
+                contents.user = personalGiteaIdentity;
+            }
+            {
+                condition = "hasconfig:remote.*.url:https://gitea.vaelmyr.dev/*/**";
+                contents.user = personalGiteaIdentity;
+            }
+            {
+                condition = "hasconfig:remote.*.url:ssh://git@gitea.vaelmyr.dev/*/**";
+                contents.user = personalGiteaIdentity;
+            }
         ];
     };
 
@@ -146,6 +166,13 @@ in
                 HostName = "github.com";
                 IdentitiesOnly = true;
                 IdentityFile = davinciGitIdentity.signingKey;
+            };
+
+            "gitea.vaelmyr.dev" = {
+                User = "git";
+                HostName = "gitea.vaelmyr.dev";
+                IdentitiesOnly = true;
+                IdentityFile = personalGiteaIdentity.signingKey;
             };
 
             "*" = {
