@@ -11,6 +11,9 @@ with pkgs; [
     fastfetch
 
     # G
+    godot-mono-preview
+    godot-mono-preview.dotnet-sdk
+
     # H
     # I
     # J

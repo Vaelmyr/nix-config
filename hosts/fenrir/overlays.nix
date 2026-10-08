@@ -1,5 +1,10 @@
 [
     (final: prev: {
+        # Pin official previews independently of nixpkgs' stable Godot.
+        godotPreviewPackages = final.callPackage ../../pkgs/godot { };
+        godot-preview = final.godotPreviewPackages.godot;
+        godot-mono-preview = final.godotPreviewPackages.godot-mono;
+
         # TablePlus needs GIO's TLS backend for HTTPS license activation.
         tableplus = prev.tableplus.overrideAttrs (old: {
             buildInputs = (old.buildInputs or []) ++ [ final.glib-networking ];
