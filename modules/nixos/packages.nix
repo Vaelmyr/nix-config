@@ -9,6 +9,7 @@ with pkgs; [
     # E
     # F
     fastfetch
+    fusion360
 
     # G
     godot-mono-preview

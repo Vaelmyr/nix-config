@@ -1,5 +1,7 @@
 [
     (final: prev: {
+        fusion360 = final.callPackage ../../pkgs/fusion360 { };
+
         # Pin official previews independently of nixpkgs' stable Godot.
         godotPreviewPackages = final.callPackage ../../pkgs/godot { };
         godot-preview = final.godotPreviewPackages.godot;
