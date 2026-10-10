@@ -2,6 +2,7 @@
 let
     nixos-packages = import ./packages.nix { inherit pkgs; };
     shared-packages = import ../shared/packages.nix { inherit pkgs; };
+    shared-scripts = import ../shared/scripts.nix { inherit pkgs; };
 
     shared-programs = import ../shared/home-manager.nix { inherit config pkgs lib; };
 in
@@ -12,7 +13,7 @@ in
 
     home = {
         stateVersion = "26.05";
-        packages = nixos-packages ++ shared-packages;
+        packages = nixos-packages ++ shared-packages ++ shared-scripts;
     };
 
     programs = shared-programs;
