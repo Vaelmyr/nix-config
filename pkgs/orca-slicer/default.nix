@@ -25,6 +25,10 @@ appimageTools.wrapType2 {
         export SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt
         export GIO_EXTRA_MODULES=${glib-networking}/lib/gio/modules
         export WEBKIT_DISABLE_COMPOSITING_MODE=1
+
+        # Avoid the Mesa thumbnail-rendering crash when slicing under Wayland.
+        # https://github.com/OrcaSlicer/OrcaSlicer/issues/14453
+        export GDK_BACKEND=x11
     '';
 
     extraInstallCommands = ''
