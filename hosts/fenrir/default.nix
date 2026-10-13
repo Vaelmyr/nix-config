@@ -129,6 +129,9 @@
     programs = {
         zsh.enable = true;
 
+        # Support dynamically linked executables downloaded by editor extensions.
+        nix-ld.enable = true;
+
         localsend = {
             enable = true;
             openFirewall = true;
