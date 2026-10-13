@@ -12,6 +12,7 @@ with pkgs; [
     fusion360
 
     # G
+    gamescope # gamescope -w 3440 -h 1440 -f -r 165 --adaptive-sync --hdr-enabled -- %command%
     godot-mono-preview
     godot-mono-preview.dotnet-sdk
 
