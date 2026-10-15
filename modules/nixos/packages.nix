@@ -17,6 +17,8 @@ with pkgs; [
     godot-mono-preview.dotnet-sdk
 
     # H
+    hytale-launcher
+
     # I
     # J
     # K
