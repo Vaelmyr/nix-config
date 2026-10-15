@@ -39,7 +39,7 @@ Workspace filenames replace `/` with `-`: `feature/booking` becomes
 - Copies `.env` and `.env.*`, including nested files, from the source checkout.
   Copies receive `0600` permissions and local Git exclusions; already tracked
   files remain tracked. Dependency folders and worktrees are skipped, and env
-  symlinks are rejected. Env files are not automatically loaded into the shell.
+  symlinks are rejected. Copied env files are not automatically loaded into the shell.
 - Detects Node from `.nvmrc`, `.node-version`, `.tool-versions`, Volta or
   `engines.node`, and the package manager from `packageManager`, Volta or
   lockfiles, using the starting commit. Declared versions are used automatically;
@@ -52,6 +52,9 @@ Workspace filenames replace `/` with `-`: `feature/booking` becomes
 - Generates and authorizes `.envrc` files for automatic activation with direnv.
   Existing `.envrc` files are preserved. Different environments activate inside
   each repository; matching environments also activate at the task root.
+- Workspaces under `~/Projects/DaVinci` load the shared `~/Projects/DaVinci/.env`
+  with `dotenv` after activating the Nix shell, at both task and repository roots.
+  This file must exist; its contents are not copied into the generated configuration.
 
 The flake lives in `.worktree-env` so repository files and copied secrets stay
 out of the Nix store. Creating the environment requires access to the Nix inputs.
