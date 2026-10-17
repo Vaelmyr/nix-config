@@ -232,6 +232,10 @@ def setup_workspace(task, repo_name, environment, workspace):
     folders = document.setdefault("folders", [])
     if not any(folder.get("path") == repo_name for folder in folders):
         folders.append({"name": repo_name, "path": repo_name})
+    settings = document.setdefault("settings", {})
+    for setting in ("search.exclude", "files.exclude"):
+        exclusions = settings.setdefault(setting, {})
+        exclusions.update({"**/.direnv": True, "**/.worktree-env": True})
     write_json(workspace, document)
     generated = []
     shared_dotenv = ('dotenv "$HOME/Projects/DaVinci/.env"\n'

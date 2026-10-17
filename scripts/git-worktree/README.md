@@ -34,6 +34,10 @@ branches and worktree destinations are rejected.
 Workspace filenames replace `/` with `-`: `feature/booking` becomes
 `feature-booking.code-workspace`.
 
+Generated workspaces exclude `.direnv` and `.worktree-env` directories at any
+depth from text search, Quick Open (`Ctrl+P`) and the Explorer. Other workspace
+settings and exclusion patterns are preserved.
+
 ## Environment
 
 - Copies `.env` and `.env.*`, including nested files, from the source checkout.
