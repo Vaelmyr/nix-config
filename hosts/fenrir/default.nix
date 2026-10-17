@@ -148,6 +148,9 @@
     # Let SDL use xpadneo mappings so Steam can configure the Elite Series 2 paddles.
     environment.sessionVariables.SDL_JOYSTICK_HIDAPI = "0";
 
+    # Godot .NET executable for external editors and launch configurations.
+    environment.sessionVariables.GODOT = lib.getExe pkgs.godot-mono-preview;
+
     # Console configuration for virtual terminals
     console.useXkbConfig = true;
 

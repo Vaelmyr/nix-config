@@ -12,6 +12,14 @@
         godot-preview = final.godotPreviewPackages.godot;
         godot-mono-preview = final.godotPreviewPackages.godot-mono;
 
+        # The downloaded C# debugger loads ICU dynamically outside nix-ld's startup.
+        vscode = prev.vscode.overrideAttrs (old: {
+            postFixup = (old.postFixup or "") + ''
+                wrapProgram $out/bin/code \
+                    --prefix LD_LIBRARY_PATH : ${final.lib.makeLibraryPath [ final.icu ]}
+            '';
+        });
+
         # TablePlus needs GIO's TLS backend for HTTPS license activation.
         tableplus = prev.tableplus.overrideAttrs (old: {
             buildInputs = (old.buildInputs or []) ++ [ final.glib-networking ];
