@@ -8,6 +8,7 @@ with pkgs; [
     btop
 
     # C
+    code-cursor
     codex
     coreutils
     curl

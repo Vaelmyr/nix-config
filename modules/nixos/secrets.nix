@@ -35,6 +35,13 @@
                 group = "users";
             };
 
+            github-mera = {
+                file = "${secrets}/id_ed25519_github_mera.age";
+                path = "${config.users.users.${user}.home}/.ssh/id_ed25519_github_mera";
+                owner = user;
+                group = "users";
+            };
+
             gitea-personal = {
                 file = "${secrets}/id_ed25519_gitea_personal.age";
                 path = "${config.users.users.${user}.home}/.ssh/id_ed25519_gitea_personal";

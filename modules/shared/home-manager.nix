@@ -12,6 +12,12 @@ let
         signingKey = "${config.home.homeDirectory}/.ssh/id_ed25519_github_davinci";
     };
 
+    meraGitIdentity = {
+        name = "Salvatore Distefano";
+        email = "s.distefano@merasalute.it";
+        signingKey = "${config.home.homeDirectory}/.ssh/id_ed25519_github_mera";
+    };
+
     personalGiteaIdentity = {
         name = "Vaelmyr";
         email = "sdistefano.dev@gmail.com";
@@ -101,6 +107,13 @@ in
             url."ssh://git@github-davinci/DavinciSalute/".insteadOf = [
                 "ssh://git@github.com/DavinciSalute/"
             ];
+
+            url."git@github-mera:Mera-Salute/".insteadOf = [
+                "git@github.com:Mera-Salute/"
+            ];
+            url."ssh://git@github-mera/Mera-Salute/".insteadOf = [
+                "ssh://git@github.com/Mera-Salute/"
+            ];
         };
 
         includes = [
@@ -131,6 +144,20 @@ in
             {
                 condition = "hasconfig:remote.*.url:ssh://git@github.com/DavinciSalute/**";
                 contents.user = davinciGitIdentity;
+            }
+
+            # Mera GitHub
+            {
+                condition = "hasconfig:remote.*.url:git@github.com:Mera-Salute/**";
+                contents.user = meraGitIdentity;
+            }
+            {
+                condition = "hasconfig:remote.*.url:https://github.com/Mera-Salute/**";
+                contents.user = meraGitIdentity;
+            }
+            {
+                condition = "hasconfig:remote.*.url:ssh://git@github.com/Mera-Salute/**";
+                contents.user = meraGitIdentity;
             }
 
             # Personal Gitea
@@ -166,6 +193,13 @@ in
                 HostName = "github.com";
                 IdentitiesOnly = true;
                 IdentityFile = davinciGitIdentity.signingKey;
+            };
+
+            "github-mera" = {
+                User = "git";
+                HostName = "github.com";
+                IdentitiesOnly = true;
+                IdentityFile = meraGitIdentity.signingKey;
             };
 
             "gitea.vaelmyr.dev" = {
