@@ -8,6 +8,7 @@ with pkgs; [
     btop
 
     # C
+    chatgpt
     code-cursor
     codex
     coreutils
