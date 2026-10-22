@@ -12,6 +12,14 @@
         godot-preview = final.godotPreviewPackages.godot;
         godot-mono-preview = final.godotPreviewPackages.godot-mono;
 
+        # HPLIP's wrapper arguments are an array in the updated nixpkgs.
+        hplip = prev.hplip.overrideAttrs (old: {
+            preFixup = builtins.replaceStrings
+                [ "$makeWrapperArgs" ]
+                [ ''"''${makeWrapperArgs[@]}"'' ]
+                old.preFixup;
+        });
+
         # The downloaded C# debugger loads ICU dynamically outside nix-ld's startup.
         vscode = prev.vscode.overrideAttrs (old: {
             postFixup = (old.postFixup or "") + ''
