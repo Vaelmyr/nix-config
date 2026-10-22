@@ -6,6 +6,7 @@
         ./disko.nix
         ../../modules/nixos/secrets.nix
         ../../modules/nixos/gnupg.nix
+        ../../modules/nixos/flatpak.nix
     ];
 
     # Hardware configuration, merged from `hardware-configuration.nix`
