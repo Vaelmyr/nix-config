@@ -129,6 +129,8 @@
     programs = {
         zsh.enable = true;
 
+        kde-pim.merkuro = true;
+
         # Support dynamically linked executables downloaded by editor extensions.
         nix-ld.enable = true;
 
