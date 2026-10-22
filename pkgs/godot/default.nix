@@ -11,8 +11,13 @@ let
             changelog = "https://github.com/godotengine/godot-builds/releases/tag/${release.version}";
         };
     } // lib.optionalAttrs (attrs ? sconsFlags) {
-        # 4.8-dev7 needs OpenXR headers newer than those in the pinned nixpkgs.
-        sconsFlags = attrs.sconsFlags ++ [ "builtin_openxr=true" ];
+        # The preview needs newer OpenXR and HarfBuzz than the pinned nixpkgs.
+        sconsFlags = attrs.sconsFlags ++ [ "builtin_openxr=true" "builtin_harfbuzz=true" ];
+        # nixpkgs adds this for its system HarfBuzz build; use the bundled one.
+        preBuild = builtins.replaceStrings
+            [ ''export NIX_LDFLAGS="$NIX_LDFLAGS -lharfbuzz-raster"'' ]
+            [ "" ]
+            (attrs.preBuild or "");
     };
 
     # Reuse nixpkgs' source build, desktop integration, .NET wrapper and tests.
