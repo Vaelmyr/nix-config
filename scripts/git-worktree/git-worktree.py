@@ -133,12 +133,14 @@ def render_flake(projects):
     if legacy:
         inputs += '  inputs.nodeLegacy.url = "github:NixOS/nixpkgs/nixos-24.11";\n'
     if ancient:
-        inputs += '  inputs.node16.url = "github:NixOS/nixpkgs/nixos-23.11";\n'
+        # Node 16 was already removed in 23.11; 23.05 retains 16.20.2.
+        inputs += '  inputs.node16.url = "github:NixOS/nixpkgs/nixos-23.05";\n'
     shells = []
     for name, project in projects.items():
         major, manager = project["node"], project["manager"]
         source = "inputs.node16" if major == 16 else "inputs.nodeLegacy" if major in (18, 20) else "inputs.nixpkgs"
-        node = f'(import {source} {{ inherit system; }}).nodejs_{major}' if major else None
+        node_config = ' config.permittedInsecurePackages = [ "nodejs-16.20.2" ];' if major == 16 else ""
+        node = f'(import {source} {{ inherit system;{node_config} }}).nodejs_{major}' if major else None
         tools = "[ pkgs.git ]"
         if node:
             tools = f"[ pkgs.git {node} ]"

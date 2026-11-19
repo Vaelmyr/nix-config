@@ -7,6 +7,7 @@
         ../../modules/nixos/secrets.nix
         ../../modules/nixos/gnupg.nix
         ../../modules/nixos/flatpak.nix
+        ../../modules/nixos/a2tools-dps-meter.nix
     ];
 
     # Hardware configuration, merged from `hardware-configuration.nix`
@@ -21,7 +22,6 @@
         };
 
         initrd.systemd = {
-            enable = true;
             tpm2.enable = true;
         };
 
@@ -128,6 +128,8 @@
 
     # Programs configuration
     programs = {
+        a2tools-dps-meter.enable = true;
+
         zsh.enable = true;
 
         kde-pim.merkuro = true;
@@ -159,6 +161,8 @@
 
     # Services configuration
     services = {
+        lact.enable = true;
+
         xserver = {
             enable = true;
             videoDrivers = [ "amdgpu" ];

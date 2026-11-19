@@ -53,6 +53,8 @@ settings and exclusion patterns are preserved.
   patch available in nixpkgs, not necessarily the exact patch in `.nvmrc`.
   Older Node majors use separate nixpkgs inputs. Corepack selects the requested
   package manager version; dependencies are not installed automatically.
+  Node 16 uses nixos-23.05 (16.20.2), with a package-specific insecure exception
+  scoped to that import because Node 16 is EOL and absent from newer releases.
 - Generates and authorizes `.envrc` files for automatic activation with direnv.
   Existing `.envrc` files are preserved. Different environments activate inside
   each repository; matching environments also activate at the task root.

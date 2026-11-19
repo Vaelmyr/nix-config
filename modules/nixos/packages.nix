@@ -5,6 +5,8 @@ with pkgs; [
     # A
     # B
     # C
+    curseforge
+
     # D
     # E
     # F
@@ -17,8 +19,6 @@ with pkgs; [
     godot-mono-preview.dotnet-sdk
 
     # H
-    hytale-launcher
-
     # I
     # J
     # K
@@ -26,6 +26,8 @@ with pkgs; [
     kdePackages.kdepim-addons
 
     # L
+    lact
+
     # M
     # N
     # O
