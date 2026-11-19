@@ -7,6 +7,8 @@
 
         fusion360 = final.callPackage ../../pkgs/fusion360 { };
 
+        jasna = final.callPackage ../../pkgs/jasna { };
+
         curseforge = final.callPackage ../../pkgs/curseforge { };
 
         # Pin the Mono preview independently of nixpkgs' stable Godot.

@@ -21,6 +21,8 @@ with pkgs; [
     # H
     # I
     # J
+    jasna
+
     # K
     kdePackages.akonadi-calendar
     kdePackages.kdepim-addons
