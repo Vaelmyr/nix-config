@@ -38,13 +38,6 @@ nix --extra-experimental-features 'nix-command flakes' \
   shell nixpkgs#git nixpkgs#openssh
 ```
 
-Clone this repository and enter its directory:
-
-```bash
-git clone git@github.com:Vaelmyr/nix-config.git /root/nix-config
-cd /root/nix-config
-```
-
 Set the correct permissions on the agenix identity, start a new SSH agent, and
 load the key:
 
@@ -54,6 +47,13 @@ chmod 0600 /run/bootstrap/id_ed25519_agenix
 
 eval "$(ssh-agent -a /run/bootstrap/ssh-agent.sock -s)"
 ssh-add /run/bootstrap/id_ed25519_agenix
+```
+
+Clone this repository and enter its directory:
+
+```bash
+git clone git@github.com:Vaelmyr/nix-config.git /root/nix-config
+cd /root/nix-config
 ```
 
 Verify that the same identity can access the private `nix-secrets` repository:
@@ -71,7 +71,9 @@ agent.
 > The following command formats the selected disk. Verify the device and make
 > sure a current backup exists before continuing.
 
-Run the installation from the repository directory:
+Run the installation from the repository directory, pick the correct host command:
+
+#### Fenrir
 
 ```bash
 nix \
@@ -79,6 +81,18 @@ nix \
   run --inputs-from . disko#disko-install -- \
     --flake .#fenrir \
     --disk main /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_AA221223NV01kG05593 \
+    --write-efi-boot-entries \
+    --extra-files /run/bootstrap/id_ed25519_agenix /var/lib/agenix/id_ed25519_agenix
+```
+
+#### Yggdrasil
+
+```bash
+nix \
+  --extra-experimental-features 'nix-command flakes' \
+  run --inputs-from . disko#disko-install -- \
+    --flake .#yggdrasil \
+    --disk main /dev/disk/by-id/nvme-SPCC_M.2_PCIe_SSD_17A8079A10BE00256919 \
     --write-efi-boot-entries \
     --extra-files /run/bootstrap/id_ed25519_agenix /var/lib/agenix/id_ed25519_agenix
 ```

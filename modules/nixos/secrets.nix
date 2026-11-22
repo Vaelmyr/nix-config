@@ -1,6 +1,11 @@
 { config, secrets, user, ... }:
 
 {
+    # Agenix creates the SSH directory before users; fix its ownership for Home Manager.
+    systemd.tmpfiles.rules = [
+        "d ${config.users.users.${user}.home}/.ssh 0700 ${user} users -"
+    ];
+
     age = {
         identityPaths = [
             "/var/lib/agenix/id_ed25519_agenix"

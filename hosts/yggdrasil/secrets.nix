@@ -1,6 +1,11 @@
 { config, secrets, user, ... }:
 
 {
+    # Agenix creates parent directories as root; Home Manager needs to write here.
+    systemd.tmpfiles.rules = [
+        "d ${config.users.users.${user}.home}/.ssh 0700 ${user} users -"
+    ];
+
     age = {
         identityPaths = [
             "/var/lib/agenix/id_ed25519_agenix"

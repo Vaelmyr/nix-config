@@ -243,11 +243,6 @@
         };
     };
 
-    # Agenix creates the SSH directory before users; fix its ownership for Home Manager.
-    systemd.tmpfiles.rules = [
-        "d ${config.users.users.${user}.home}/.ssh 0700 ${user} users -"
-    ];
-
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
