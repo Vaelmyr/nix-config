@@ -1,0 +1,4 @@
+[
+  {"version":"0.2.0","en":"Floating compass overlay with drag positioning and click-through lock. Added opened-cube session count and reset. Compass remains oriented to map north."},
+  {"version":"0.1.0","en":"Nearby cube alerts, world positions and estimated compass guidance."}
+]

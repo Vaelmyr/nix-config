@@ -1,0 +1,22 @@
+:root { font-family: system-ui, sans-serif; color: #edf3fc; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 6px; background: transparent; user-select: none; }
+[hidden] { display: none !important; }
+.compass { height: 220px; border: 1px solid #ffffff26; border-radius: 18px; background: #0a101bea; padding: 12px; text-align: center; }
+.heading { font-size: 9px; letter-spacing: .13em; color: #9fcce7; }
+.heading span { display: block; color: #e6c994; font-size: 8px; margin-top: 3px; }
+.dial { width: 112px; height: 112px; border: 1px solid #ffffff30; border-radius: 50%; margin: 10px auto 6px; position: relative; }
+.north,.east,.south,.west { position: absolute; color: #9fb0c5; font-size: 9px; }
+.north { top: 4px; left: 50%; transform: translateX(-50%); }
+.south { bottom: 4px; left: 50%; transform: translateX(-50%); }
+.east { right: 5px; top: 50%; transform: translateY(-50%); }
+.west { left: 5px; top: 50%; transform: translateY(-50%); }
+.arrow { position: absolute; inset: 24px; color: #a7efc3; font-size: 48px; line-height: 60px; transform-origin: center; }
+.no-fix { position: absolute; inset: 43px 0; font-size: 11px; color: #a6b4c7; }
+.distance { font-weight: 650; font-size: 18px; }
+.detail { font-size: 10px; color: #a6b4c7; margin-top: 4px; }
+.session { color: #a6b4c7; font-size: 10px; margin-top: 6px; }
+.movable { cursor: move; }
+.movable .compass { border-color: #e6c994; }
+.movable .dial { width: 102px; height: 102px; margin-top: 7px; }
+.stale .arrow { opacity: .3; }

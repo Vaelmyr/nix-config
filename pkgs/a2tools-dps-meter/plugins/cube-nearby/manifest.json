@@ -1,0 +1,464 @@
+{
+  "id": "cube-nearby",
+  "name": "Cube Nearby",
+  "version": "0.2.0",
+  "apiVersion": 2,
+  "author": "Local plugin",
+  "description": "Nearby Hidden Cube alerts, world positions and a compass using your last reported position.",
+  "permissions": [
+    "storage",
+    "notify",
+    "window",
+    "widgets",
+    "events:character",
+    "decoder:object-spawn",
+    "decoder:object-remove",
+    "decoder:cube-opening",
+    "decoder:cube-opened",
+    "decoder:map-load",
+    "decoder:teleport",
+    "decoder:self-cast",
+    "decoder:self-hit",
+    "decoder:buff-add-plain",
+    "decoder:buff-add-skill",
+    "decoder:buff-change-plain",
+    "decoder:buff-change-skill"
+  ],
+  "decoders": [
+    {
+      "name": "object-spawn",
+      "opcode": "34 36",
+      "fields": [
+        {
+          "name": "entity",
+          "type": "varint"
+        },
+        {
+          "name": "flags",
+          "type": "u16"
+        },
+        {
+          "name": "template",
+          "type": "u32"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "object-remove",
+      "opcode": "35 36",
+      "fields": [
+        {
+          "name": "entity",
+          "type": "varint"
+        },
+        {
+          "name": "reason",
+          "type": "u8"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "cube-opening",
+      "opcode": "38 36",
+      "self": "actor",
+      "fields": [
+        {
+          "name": "entity",
+          "type": "varint"
+        },
+        {
+          "name": "actor",
+          "type": "varint"
+        },
+        {
+          "name": "kind",
+          "type": "u8"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "cube-opened",
+      "opcode": "3A 36",
+      "self": "actor",
+      "fields": [
+        {
+          "name": "entity",
+          "type": "varint"
+        },
+        {
+          "name": "actor",
+          "type": "varint"
+        },
+        {
+          "name": "count",
+          "type": "u32"
+        },
+        {
+          "name": "item",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "map-load",
+      "opcode": "21 36",
+      "fields": [
+        {
+          "type": "skip:4"
+        },
+        {
+          "name": "map",
+          "type": "u32"
+        },
+        {
+          "type": "skip:8"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "teleport",
+      "opcode": "23 36",
+      "fields": [
+        {
+          "name": "entity",
+          "type": "varint"
+        },
+        {
+          "type": "skip:5"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "self-cast",
+      "opcode": "02 38",
+      "self": "target",
+      "fields": [
+        {
+          "name": "actor",
+          "type": "varint"
+        },
+        {
+          "name": "flags",
+          "type": "varint"
+        },
+        {
+          "name": "skill",
+          "type": "u32"
+        },
+        {
+          "name": "sequence",
+          "type": "u8"
+        },
+        {
+          "name": "kind",
+          "type": "u8"
+        },
+        {
+          "name": "target",
+          "type": "varint"
+        },
+        {
+          "type": "skip:4"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "self-hit",
+      "opcode": "0E 38",
+      "self": "target",
+      "fields": [
+        {
+          "name": "actor",
+          "type": "varint"
+        },
+        {
+          "name": "kind",
+          "type": "u8"
+        },
+        {
+          "name": "target",
+          "type": "varint"
+        },
+        {
+          "type": "skip:9"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "buff-add-plain",
+      "opcode": "2A 38",
+      "self": "caster",
+      "fields": [
+        {
+          "name": "target",
+          "type": "varint"
+        },
+        {
+          "name": "mode",
+          "type": "u8"
+        },
+        {
+          "name": "flags",
+          "type": "u8"
+        },
+        {
+          "name": "instance",
+          "type": "varint"
+        },
+        {
+          "type": "skip:20"
+        },
+        {
+          "name": "caster",
+          "type": "varint"
+        },
+        {
+          "name": "level",
+          "type": "u8"
+        },
+        {
+          "name": "marker",
+          "type": "u8"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "buff-add-skill",
+      "opcode": "2A 38",
+      "self": "caster",
+      "fields": [
+        {
+          "name": "target",
+          "type": "varint"
+        },
+        {
+          "name": "mode",
+          "type": "u8"
+        },
+        {
+          "name": "flags",
+          "type": "u8"
+        },
+        {
+          "name": "instance",
+          "type": "varint"
+        },
+        {
+          "type": "skip:20"
+        },
+        {
+          "name": "caster",
+          "type": "varint"
+        },
+        {
+          "name": "level",
+          "type": "u8"
+        },
+        {
+          "type": "skip:4"
+        },
+        {
+          "name": "marker",
+          "type": "u8"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "buff-change-plain",
+      "opcode": "2B 38",
+      "self": "caster",
+      "fields": [
+        {
+          "name": "target",
+          "type": "varint"
+        },
+        {
+          "name": "flags",
+          "type": "u8"
+        },
+        {
+          "name": "instance",
+          "type": "varint"
+        },
+        {
+          "type": "skip:20"
+        },
+        {
+          "name": "caster",
+          "type": "varint"
+        },
+        {
+          "name": "level",
+          "type": "u8"
+        },
+        {
+          "name": "marker",
+          "type": "u8"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    },
+    {
+      "name": "buff-change-skill",
+      "opcode": "2B 38",
+      "self": "caster",
+      "fields": [
+        {
+          "name": "target",
+          "type": "varint"
+        },
+        {
+          "name": "flags",
+          "type": "u8"
+        },
+        {
+          "name": "instance",
+          "type": "varint"
+        },
+        {
+          "type": "skip:20"
+        },
+        {
+          "name": "caster",
+          "type": "varint"
+        },
+        {
+          "name": "level",
+          "type": "u8"
+        },
+        {
+          "type": "skip:4"
+        },
+        {
+          "name": "marker",
+          "type": "u8"
+        },
+        {
+          "name": "x",
+          "type": "u32"
+        },
+        {
+          "name": "y",
+          "type": "u32"
+        },
+        {
+          "name": "z",
+          "type": "u32"
+        }
+      ],
+      "immediate": true
+    }
+  ],
+  "ui": {
+    "panel": {
+      "width": 380,
+      "height": 580
+    }
+  }
+}

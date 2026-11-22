@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cube Nearby</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><div><span class="eyebrow">HIDDEN CUBES</span><h1 id="status" role="status">Listening for cubes</h1></div><span id="lamp" class="lamp"></span></header>
+  <p id="hint" class="hint">Approach a cube while this plugin is enabled.</p>
+  <section id="nearest" hidden aria-label="Nearest cube">
+    <div class="navigation"><div class="dial"><span class="north">N</span><span id="arrow" class="arrow">↑</span><span class="you">●</span></div><div><div id="distance" class="distance"></div><div id="bearing" class="bearing"></div><div id="height" class="muted"></div></div></div>
+    <div class="position"><span>Cube world position</span><code id="coordinates"></code></div>
+    <p id="position-age" class="hint"></p>
+  </section>
+  <div id="cubes" class="cubes" aria-label="Detected cubes"></div>
+  <p id="last-opened" class="hint"></p>
+  <section class="session" aria-label="Cube session statistics">
+    <div><span class="eyebrow">OPENED THIS SESSION</span><strong id="session-count">0</strong><span id="session-since" class="muted"></span></div>
+    <button id="reset-session" type="button">Reset count</button>
+  </section>
+  <details><summary>Options &amp; status</summary><div class="options">
+    <label><input id="auto-show" type="checkbox" checked> Show panel when a new cube appears</label>
+    <label><input id="alerts" type="checkbox" checked> Show new-cube notification</label>
+    <label><input id="show-overlay" type="checkbox" checked> Floating compass overlay</label>
+    <label><input id="lock-overlay" type="checkbox" checked> Lock overlay (click-through)</label>
+    <button id="move-overlay" type="button">Move overlay</button>
+    <label class="select-row">Map north <select id="north"><option value="-y">−Y (default)</option><option value="+y">+Y</option><option value="+x">+X</option><option value="-x">−X</option></select></label>
+    <p class="hint">Arrow uses map north, not camera direction. Adjust north to match your map.</p>
+    <p class="hint">Positions update on buffs, skills and teleports. Use a self buff to refresh your position.</p>
+    <p id="diagnostics" class="hint"></p>
+    <button id="clear" type="button">Clear sightings</button>
+  </div></details>
+  <script src="/_sdk/a2.js"></script>
+  <script src="core.js"></script>
+  <script src="overlay.js"></script>
+  <script src="plugin.js"></script>
+</body>
+</html>

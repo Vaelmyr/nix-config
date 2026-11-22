@@ -181,6 +181,13 @@ in
         enableDefaultConfig = false;
 
         settings = {
+            "yggdrasil" = {
+                User = config.home.username;
+                HostName = "yggdrasil";
+                IdentitiesOnly = true;
+                IdentityFile = "${config.home.homeDirectory}/.ssh/id_ed25519_yggdrasil";
+            };
+
             "github-personal" = {
                 User = "git";
                 HostName = "github.com";

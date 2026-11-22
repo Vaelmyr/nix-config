@@ -49,6 +49,13 @@
                 group = "users";
             };
 
+            ssh-yggdrasil = {
+                file = "${secrets}/id_ed25519_ssh_yggdrasil.age";
+                path = "${config.users.users.${user}.home}/.ssh/id_ed25519_yggdrasil";
+                owner = user;
+                group = "users";
+            };
+
             user-password = {
                 file = "${secrets}/user-password.age";
             };

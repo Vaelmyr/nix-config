@@ -37,6 +37,31 @@
     in
     {
         nixosConfigurations = {
+            yggdrasil = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                specialArgs = inputs // { inherit user; };
+
+                modules = [
+                    disko.nixosModules.disko
+                    agenix.nixosModules.default
+                    home-manager.nixosModules.home-manager {
+                        home-manager = {
+                            useGlobalPkgs = true;
+                            useUserPackages = true;
+
+                            users.${user} = { config, pkgs, lib, ... }: {
+                                home.stateVersion = "26.05";
+
+                                programs = import ./modules/shared/home-manager.nix {
+                                    inherit config pkgs lib;
+                                };
+                            };
+                        };
+                    }
+                    ./hosts/yggdrasil
+                ];
+            };
+
             fenrir = nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 specialArgs = inputs // { inherit user; };
@@ -49,7 +74,6 @@
                             sharedModules = [ plasma-manager.homeModules.plasma-manager ];
                             useGlobalPkgs = true;
                             useUserPackages = true;
-
 
                             users.${user} = { config, pkgs, lib, ... }:
                                 import ./modules/nixos/home-manager.nix { inherit config pkgs lib; };

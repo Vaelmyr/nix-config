@@ -34,3 +34,10 @@ nix build --no-link 'path:.#nixosConfigurations.fenrir.pkgs.a2tools-dps-meter'
 ```
 
 Upstream documentation: <https://github.com/taengu/A2Tools-DPS-Meter/blob/main/docs/linux.md>
+
+## Local Cube Nearby plugin
+
+[Cube Nearby](plugins/cube-nearby/README.md) adds Hidden Cube alerts, world
+coordinates and an estimated compass direction using your last reported
+position. Load `plugins/cube-nearby` through **Settings → Plugins → Plugin
+developer mode → Load plugin folder…**. No NixOS rebuild is required.
